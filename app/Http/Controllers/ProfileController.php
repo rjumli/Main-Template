@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Google2FA;
-use PragmaRX\Google2FAQRCode\Google2FA as QR;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProfileRequest;
@@ -24,23 +22,9 @@ class ProfileController extends Controller
             case 'statistics':
                 return $this->statistics();
             break;
-            case 'two-factor':
-                return $this->statistics();
-            break;
             default: 
             return inertia('Modules/Profile/Index');
         }
-    }
-
-    public function store(Request $request){
-       $option = $request->option;
-       switch($option){
-            case 'confirm':
-                return $this->confirm2fa($request);
-            break;
-            default:
-                return $this->enable2fa();
-       }
     }
    
     public function update(ProfileRequest $request){
@@ -53,27 +37,6 @@ class ProfileController extends Controller
             'info' => "You've successfully update user profile.",
             'status' => true
         ]);
-    }
-
-    public function enable2fa(){
-        $google2fa = new QR();
-        $key = $google2fa->generateSecretKey();
-        $url = $google2fa->getQRCodeInline('DOST',\Auth::user()->email, $key);
-      
-        return [
-            'key' => $key,
-            'url' => $url
-        ];
-    }
-
-    public function confirm2fa($request){
-        $google2fa = new Google2FA();
-        $google2fa->verifyKey($request->key, $request->code);
-        return $google2fa;
-    }
-
-    public function twoFactor(){
-        return 'wew';
     }
 
     public function authenticationLogs($request){

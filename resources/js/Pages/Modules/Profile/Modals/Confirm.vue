@@ -1,5 +1,6 @@
 <script setup>
 import { ref, reactive, nextTick } from 'vue';
+import { usePage } from '@inertiajs/vue3';
 import InputError from '@/Shared/Components/Forms/InputError.vue';
 import TextInput from '@/Shared/Components/Forms/TextInput.vue';
 
@@ -16,29 +17,18 @@ const form = reactive({
 const passwordInput = ref(null);
 
 const startConfirmingPassword = () => {
-    // axios.get('/user/confirmed-password-status').then(response => {
-    //     if (response.data.confirmed) {
-    //         emit('confirmed');
-    //     } else {
-    //         console.log(response)
-    //         confirmingPassword.value = true;
-
-    //         setTimeout(() => passwordInput.value.focus(), 250);
-    //     }
-    // });
-    emit('confirmed');
-    // if($page.props.user.data.password_confirmed_at){    
-    //     emit('confirmed');
-    // }else{
-    //     confirmingPassword.value = true;
-    //     setTimeout(() => passwordInput.value.focus(), 250);
-    // }
+    if(usePage().props.user.data.password_confirmed_at){    
+        emit('confirmed');
+    }else{
+        confirmingPassword.value = true;
+        setTimeout(() => passwordInput.value.focus(), 250);
+    }
 };
 
 const confirmPassword = () => {
     form.processing = true;
 
-    axios.post('/user/confirm-password', {
+    axios.post('/confirm-password', {
         password: form.password,
     }).then(() => {
         form.processing = false;

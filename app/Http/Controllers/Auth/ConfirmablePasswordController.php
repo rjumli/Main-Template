@@ -15,8 +15,10 @@ class ConfirmablePasswordController extends Controller
     /**
      * Show the confirm password view.
      */
-    public function show(): Response
+    public function show(Request $request): Response
     {
+        $request->session()->forget('auth');
+        $request->session()->put('is_locked', true);
         return Inertia::render('Auth/ConfirmPassword');
     }
 
@@ -33,7 +35,7 @@ class ConfirmablePasswordController extends Controller
                 'password' => __('auth.password'),
             ]);
         }
-
+        $request->session()->put('is_locked', false);
         $request->session()->put('auth.password_confirmed_at', time());
 
         return redirect()->intended(route('dashboard', absolute: false));

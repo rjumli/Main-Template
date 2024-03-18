@@ -1,90 +1,8 @@
-<template>
-<Head title="Login" />
-    <div class="auth-page-wrapper py-5 d-flex justify-content-center align-items-center min-vh-100">
-        <div class="auth-page-content">
-            <b-container>
-
-
-                <b-row class="justify-content-center">
-                    <b-col md="8" lg="6" xl="5">
-                        <b-card no-body class="mt-4">
-                            <b-card-body class="p-4">
-                                    <div class="row mb-n3">
-                                        <div class="col-2">
-                                            <img src="@assets/images/logo-sm.png" alt="" class="avatar-sm">
-                                        </div>
-                                        <div class="col-10">
-                                            <div class="text-primary mt-1">
-                                                <h4>DOST - ONELAB</h4>
-                                                <p class="mt-n2">Reset Password</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="p-2 mt-4">
-                                        <b-alert v-model="authError" variant="danger" class="mt-3" dismissible>{{ authError }}</b-alert>
-                                    <div>
-
-                                </div>
-
-                                <form class="customform" @submit.prevent="submit">
-                                    <div class="mb-2">
-                                        <label for="email" class="form-label">Email</label>
-                                        <input type="text" class="form-control" id="email" placeholder="Enter email" v-model="form.email" />
-                                        <div class="invalid-feedback">
-                                            <span></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label class="form-label" for="password-input">Password</label>
-                                        <div class="position-relative auth-pass-inputgroup">
-                                            <input :type="(!form.showPassword) ? 'password' : 'text'"  v-model="form.password" class="form-control pe-5" placeholder="Enter password" id="password-input" />
-                                            <b-button @click="toggleShow" variant="link" class="position-absolute end-0 top-0 text-decoration-none text-muted" type="button" id="password-addon">
-                                                <i class="ri-eye-fill align-middle"></i>
-                                            </b-button>
-                                            <div class="invalid-feedback">
-                                                <span></span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label class="form-label" for="password-input">Confirm Password</label>
-                                        <div class="position-relative auth-pass-inputgroup">
-                                            <input :type="(!form.showPassword) ? 'password' : 'text'"  v-model="form.password_confirmation" class="form-control pe-5" placeholder="Enter password" id="password-input" />
-                                            <div class="invalid-feedback">
-                                                <span></span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="mt-4">
-                                        <div v-if="Object.keys(form.errors).length != 0" class="alert alert-warning text-center mt-4 mb-4" role="alert" v-text="form.errors.email"></div>
-                                        <b-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing" variant="primary" class="w-100" type="submit">
-                                            Reset Password
-                                        </b-button>
-                                    </div>
-
-                                </form>
-                                </div>
-                            </b-card-body>
-                        </b-card>
-                    </b-col>
-                </b-row>
-            </b-container>
-        </div>
-
-      
-  </div>
-</template>
-<script>
-export default {
-    layout: null,
-   
-}
-</script>
 <script setup>
-import { useForm } from '@inertiajs/vue3';
+import { Link, Head, useForm } from '@inertiajs/vue3';
+import InputError from '@/Shared/Components/Forms/InputError.vue';
+import InputLabel from '@/Shared/Components/Forms/InputLabel.vue';
+import TextInput from '@/Shared/Components/Forms/TextInput.vue';
 
 const props = defineProps({
     email: String,
@@ -96,20 +14,91 @@ const form = useForm({
     email: props.email,
     password: '',
     password_confirmation: '',
-    showPassword: false
 });
 
 const submit = () => {
-    form.post('/reset-password');
-};
-
-const toggleShow = () => {
-    if(form.showPassword){
-        form.showPassword = false;
-    }else{
-        form.showPassword = true;
-    }
+    form.post('/reset-password', {
+        onFinish: () => form.reset('password', 'password_confirmation'),
+    });
 };
 </script>
 
+<script>
+export default {
+    layout: null,
+    data() {
+        return {
+            togglePassword: false,
+            togglePassword_conf: false,
+        }
+    }
+}
+</script>
 
+<template>
+    <Head title="Reset Password" />
+
+    <div class="auth-page-wrapper pt-5 d-flex justify-content-center align-items-center min-vh-100">
+        <div class="auth-page-content">
+            <BContainer>
+                <BRow class="justify-content-center">
+                    <BCol md="8" lg="6" xl="5">
+                        <BCard no-body class="mt-4">
+
+                            <BCardBody class="p-4">
+                                <div class="text-center mt-2">
+                                    <h5 class="text-primary">Create new password</h5>
+                                    <p class="text-muted">Your new password must be different from previous used
+                                        password.</p>
+                                </div>
+
+                                <div class="p-2">
+                                    <form @submit.prevent="submit" class="customform">
+                                        <div class="mb-3">
+                                            <InputLabel for="email" value="Email" />
+                                            <TextInput id="email" v-model="form.email" type="email" required autofocus autocomplete="email" :class="{ 'is-invalid' : form.errors.email}" />
+                                            <InputError :message="form.errors.email" />
+                                        </div>
+                                        <div class="mb-3">
+                                            <InputLabel for="password-input" value="Password" />
+                                            <div class="position-relative auth-pass-inputgroup">
+                                                <input :type="togglePassword ? 'text' : 'password'" class="form-control pe-5 password-input" placeholder="Enter password" id="password-input" v-model="form.password" required :class="{ 'is-invalid' : form.errors.password}">
+                                                <BButton variant="link" class="position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon" @click="togglePassword = !togglePassword"><i class="ri-eye-fill align-middle"></i>
+                                                </BButton>
+                                                <InputError :message="form.errors.password" />
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <InputLabel for="password_confirmation" value="Confirm Password" />
+                                            <div class="position-relative auth-pass-inputgroup mb-3">
+                                                <input :type="togglePassword_conf ? 'text' : 'password'" class="form-control pe-5 password-input" placeholder="Confirm password" id="confirm-password-input" v-model="form.password_confirmation" required :class="{ 'is-invalid' : form.errors.password_confirmation}">
+                                                <BButton variant="link" class="position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="confirm-password-input" @click="togglePassword_conf = !togglePassword_conf"><i class="ri-eye-fill align-middle"></i>
+                                                </BButton>
+                                                <InputError :message="form.errors.password_confirmation" />
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-4">
+                                            <BButton variant="primary" class="w-100" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" type="submit">Reset Password</BButton>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </BCardBody>
+                        </BCard>
+
+                        <div class="mt-4 text-center">
+                            <p class="mb-0">Wait, I remember my password...
+                                <Link href="/login" class="fw-semibold text-primary text-decoration-underline"> Click
+                                here </Link>
+                            </p>
+                        </div>
+                    </BCol>
+                </BRow>
+            </BContainer>
+        </div>
+
+       
+    </div>
+</template>

@@ -43,7 +43,8 @@
                                         <span class="text-muted fs-10 float-end">{{($page.props.user.data.password_changed_at) ? 'Updated '+$page.props.user.data.password_changed_at : 'Never updated'}}</span>
                                     </BListGroupItem>
                                     <BListGroupItem @click="openModal('twofactor')" tag="button" class="list-group-item-action"><i class="ri-shield-keyhole-fill me-2"></i>Two-factor Aunthentication 
-                                        <span v-if="$page.props.user.data.two_factor_enabled" class="badge bg-success-subtle text-success float-end">Enabled</span>
+                                        <span v-if="$page.props.user.data.two_factor_enabled && $page.props.user.data.two_factor_confirmed" class="badge bg-success-subtle text-success float-end">Enabled</span>
+                                        <span v-else-if="$page.props.user.data.two_factor_enabled && !$page.props.user.data.two_factor_confirmed" class="badge bg-warning-subtle text-warning float-end">Pending</span>
                                         <span v-else class="badge bg-danger-subtle text-danger float-end">Disabled</span>
                                     </BListGroupItem>
                                     <BListGroupItem @click="openModal('session')" tag="button" class="list-group-item-action"><i class="ri-window-fill me-2"></i>Browser Sessions</BListGroupItem>
@@ -66,12 +67,14 @@
     </div>
     <Password ref="password"/>
     <TwoFactor ref="twofactor"/>
+    <Recovery ref="recovery"/>
 </template>
 <script>
+import Recovery from '../Modals/Recovery.vue';
 import Password from '../Modals/Password.vue';
 import TwoFactor from '../Modals/TwoFactor.vue';
 export default {
-    components: { Password, TwoFactor },
+    components: { Password, TwoFactor, Recovery },
     data(){
         return {
             statistics: [],

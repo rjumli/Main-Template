@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Crypt;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -24,6 +25,7 @@ class UserResource extends JsonResource
             'mobile' => $this->profile->mobile,
             'is_active' => $this->is_active,
             'two_factor_enabled' => ($this->two_factor_secret) ? true : false,
+            'two_factor_confirmed' => ($this->two_factor_confirmed_at) ? true : false,
             'password_changed_at' => $this->password_changed_at,
             'password_confirmed_at' => session('auth'),
             'created_at' => $this->created_at,

@@ -25,7 +25,7 @@
                                             <label class="form-label fw-semibold fs-12">SETUP KEY</label>
                                         </div>
                                         <div class="form-floating">
-                                            <input ref="input" class="form-control" v-model="form.code" :class="{ 'is-invalid': form.errors.code}">
+                                            <input ref="input" class="form-control" v-model="code" :class="{ 'is-invalid': form.errors.code}">
                                             <label class="form-label fw-semibold fs-12">CODE</label>
                                             <div class="invalid-feedback mt-n1">
                                                 <span class="fs-10">{{ form.errors.code }}</span>
@@ -57,94 +57,63 @@
 </template>
 <script>
 import Confirm from './Confirm.vue';
-import { router,useForm } from '@inertiajs/vue3'
 export default {
     components: { Confirm },
     data(){
         return {
             showModal: false,
             showPassword: false,
-            enabling: false,
-            confirming: false,
-            disabling: false,
+            enabling: (!this.$page.props.user.data.two_factor_enabled && !this.$page.props.user.data.two_factor_confirmed) ? true : false,
+            confirming: (this.$page.props.user.data.two_factor_enabled && !this.$page.props.user.data.two_factor_confirmed) ? true : false,
+            disabling: (this.$page.props.user.data.two_factor_enabled && this.$page.props.user.data.two_factor_confirmed) ? true : false,
             qrCode: null,
             setupKey: null,
             confirmed: false,
-            twoFactorEnabled: false,
+            twoFactorEnabled: (this.$page.props.user.data.two_factor_enabled) ? true : false,
             recoveryCodes: [],
-            form: useForm({
-                code: '',
-                key: '',
-                option: 'confirm'
-            }),
+            form: {
+                errors: []
+            }
         }
     },
     methods : {
         show() {
             this.showModal = true;
+            (this.$page.props.user.data.two_factor_enabled && !this.$page.props.user.data.two_factor_confirmed) ? this.fetchTwoFactor() : '';
+        },
+        fetchTwoFactor(){
+            return axios.post('/two-factor/fetch').then(response => {
+                this.qrCode = response.data.url;
+                this.setupKey = response.data.key;
+            });
         },
         enableTwoFactorAuthentication(){
             this.enabling = true;
-
-            // router.post('/profile', {}, {
-            //     preserveScroll: true,
-            //     onSuccess: () => Promise.all([
-            //         // this.showQrCode(),
-            //         // this.showSetupKey(),
-            //         // this.showRecoveryCodes(),
-            //     ]),
-            //     onFinish: () => {
-            //         this.enabling = false;
-            //         this.confirming = this.requiresConfirmation;
-            //     },
-            // });
-            return axios.post('/profile').then(response => {
+            return axios.post('/two-factor/enable').then(response => {
                 this.twoFactorEnabled = true;
                 this.confirming = true;
                 this.qrCode = response.data.url;
                 this.setupKey = response.data.key;
-                this.form.key =  response.data.key;
             });
         },
-        showQrCode(){
-            return axios.get('/profile',{
-                params : { option: 'two-factor' }
-            }).then(response => {
-                this.qrCode = response.data.img;
-            });
-        },
-        // showSetupKey(){
-        //     return axios.get('/user/two-factor-secret-key').then(response => {
-        //         this.setupKey = response.data.secretKey;
-        //     });
-        // },
-        // showRecoveryCodes(){
-        //     return axios.get('/user/two-factor-recovery-codes').then(response => {
-        //         this.recoveryCodes = response.data;
-        //     });
-        // },
         confirmTwoFactorAuthentication(){
-            this.form.post('/profile', {
-                errorBag: "confirmTwoFactorAuthentication",
-                preserveScroll: true,
-                preserveState: true,
-                onSuccess: () => {
+            return axios.post('/two-factor/confirm',{
+                key: this.setupKey,
+                code: this.code
+            }).then(response => {
+                if(!response.data.status){
+                    this.form.errors.code = response.data.message;
+                }else{
                     this.confirming = false;
                     this.qrCode = null;
                     this.setupKey = null;
-
-                    
-                },
+                    this.form.errors.code = '';
+                }
             });
         },
         disableTwoFactorAuthentication(){
-            this.disabling = true;
-            router.delete('/user/two-factor-authentication', {
-                preserveScroll: true,
-                onSuccess: () => {
-                    this.disabling = false;
-                    this.confirming = false;
-                },
+            return axios.post('/two-factor/disable').then(response => {
+                this.twoFactorEnabled = false;
             });
         },
         confirmPassword(){
@@ -156,7 +125,6 @@ export default {
             (!$page.props.user.data.password_changed_at) ? this.$refs.confirm.show() : '';
         },
         hide(){
-            this.form.reset();
             this.showModal = false;
         },
     }

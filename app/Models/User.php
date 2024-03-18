@@ -22,7 +22,10 @@ class User extends Authenticatable
         'password',
         'role',
         'is_active',
-        'password_changed_at'
+        'password_changed_at',
+        'two_factor_confirmed_at',
+        'two_factor_secret',
+        'two_factor_recovery_codes'
     ];
 
     /**

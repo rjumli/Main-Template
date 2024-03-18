@@ -31,6 +31,7 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
         $request->session()->regenerate();
+        $request->session()->put('two_factor_authenticated', false);
 
         if(\Auth::user()->is_active){
             return redirect()->intended(route('dashboard', absolute: false));
