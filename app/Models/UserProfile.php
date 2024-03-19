@@ -26,6 +26,21 @@ class UserProfile extends Model
         return $this->belongsTo('App\Models\User', 'user_id', 'id');
     }
 
+    public function setFirstnameAttribute($value)
+    {
+        $this->attributes['firstname'] = ucwords(strtolower($value));
+    }
+
+    public function setLastnameAttribute($value)
+    {
+        $this->attributes['lastname'] = ucwords(strtolower($value));
+    }
+
+    public function setMiddlenameAttribute($value)
+    {
+        $this->attributes['middlename'] = ucwords(strtolower($value));
+    }
+
     protected static $recordEvents = ['updated'];
     public function getActivitylogOptions(): LogOptions {
         return LogOptions::defaults()

@@ -22,7 +22,7 @@ export default {
     },
     methods: {
         check(){
-            this.$page.props.flash.message = '';
+            this.$page.props.flash = {};
             this.message = false;
         }
     }

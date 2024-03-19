@@ -3,14 +3,16 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
-
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-        <!-- Scripts -->
+        <title inertia>STSIMS</title>
+        <meta name="description" content="STSIMS - DOST IX | KRAD">
+        <meta name="keywords"content="DOST, SEI, STSIMS, KRAD">
+        <meta name="author" content="Krad">
+        <meta property="og:title" content="STSIMS - Science and Technology Scholarship Information Management System">
+        <meta property="og:description" content="Scholarship Management System">
+        <meta property="og:image" content="URL to the template's logo or featured image">
+        <meta property="og:url" content="URL to the template's webpage">
+        <meta name="twitter:card" content="summary_large_image">
+        <link rel="shortcut icon" href="{{ URL::asset('images/favicon.ico') }}">
         @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
         @inertiaHead
     </head>

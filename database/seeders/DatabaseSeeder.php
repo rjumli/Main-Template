@@ -32,5 +32,11 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        $this->call(LocationRegionsTableSeeder::class);
+        $this->call(LocationProvincesTableSeeder::class);
+        $this->call(LocationMunicipalitiesTableSeeder::class);
+        $this->call(LocationBarangaysTableSeeder::class);
+        $this->call(ConfigurationsTableSeeder::class);
     }
 }
