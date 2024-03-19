@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use \Spatie\Activitylog\Traits\LogsActivity;
-use \Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class UserProfile extends Model
 {
@@ -41,10 +41,10 @@ class UserProfile extends Model
         $this->attributes['middlename'] = ucwords(strtolower($value));
     }
 
-    protected static $recordEvents = ['updated'];
+    // protected static $recordEvents = ['updated'];
     public function getActivitylogOptions(): LogOptions {
         return LogOptions::defaults()
-        ->logFillable()
+        ->logOnly(['firstname','lastname','middlename'])
         ->setDescriptionForEvent(fn(string $eventName) => "$eventName the profile information")
         ->useLogName('User Profile')
         ->logOnlyDirty()

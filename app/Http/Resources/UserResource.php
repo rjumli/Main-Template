@@ -23,6 +23,7 @@ class UserResource extends JsonResource
             'gender' => $this->profile->gender,
             'suffix' => $this->profile->suffix,
             'mobile' => $this->profile->mobile,
+            'profile_id' => $this->profile->id,
             'is_active' => $this->is_active,
             'two_factor_enabled' => ($this->two_factor_secret) ? true : false,
             'two_factor_confirmed' => ($this->two_factor_confirmed_at) ? true : false,

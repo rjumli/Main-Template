@@ -77,12 +77,14 @@ export default {
         return {
             currentUrl: window.location.origin,
             form: useForm({
+                id: null,
                 firstname: null,
                 lastname: null,
                 username: null,
                 email: null,
                 mobile: null,
-                gender: null
+                gender: null,
+                profile_id: null
             }),
             showModal: false,
             editable: false
@@ -93,22 +95,33 @@ export default {
             this.showModal = true;
         },
         edit(data){
+            this.form.id = data.id;
             this.form.email = data.email;
             this.form.firstname = data.firstname;
             this.form.lastname = data.lastname;
             this.form.username = data.username;
             this.form.mobile = data.mobile;
             this.form.gender = data.gender;
+            this.form.profile_id = data.profile_id,
             this.editable = true;
             this.showModal = true;
         },
         submit(){
-            this.form.post('/utility/users',{
-                preserveScroll: true,
-                onSuccess: (response) => {
-                    this.hide();
-                },
-            });
+            if(this.editable){
+                this.form.put('/utility/users/update',{
+                    preserveScroll: true,
+                    onSuccess: (response) => {
+                        this.hide();
+                    },
+                });
+            }else{
+                this.form.post('/utility/users',{
+                    preserveScroll: true,
+                    onSuccess: (response) => {
+                        this.hide();
+                    },
+                });
+            }
         },
         handleInput(field) {
             this.form.errors[field] = false;

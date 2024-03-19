@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title inertia>STSIMS</title>
         <meta name="description" content="STSIMS - DOST IX | KRAD">
-        <meta name="keywords"content="DOST, SEI, STSIMS, KRAD">
+        <meta name="keywords" content="DOST, SEI, STSIMS, KRAD">
         <meta name="author" content="Krad">
         <meta property="og:title" content="STSIMS - Science and Technology Scholarship Information Management System">
         <meta property="og:description" content="Scholarship Management System">

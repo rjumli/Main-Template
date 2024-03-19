@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User\Utility;
 
 use App\Models\User;
+use App\Models\UserProfile;
 use App\Http\Resources\UserResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -49,7 +50,10 @@ class UserController extends Controller
 
     public function update(Request $request){
         $result = $this->handleTransaction(function () use ($request) {
-            $user = User::findOrFail($request->id)->update($request->all());
+            $user = User::findOrFail($request->id);
+            $user->update($request->all());
+            $profile = UserProfile::findOrFail($request->profile_id); //separate for logging
+            $profile->update($request->all());
             $updatedUser = User::with('profile')->findOrFail($request->id);
             return [
                 'data' => new UserResource($updatedUser),

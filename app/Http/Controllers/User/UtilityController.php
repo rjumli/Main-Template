@@ -11,24 +11,35 @@ class UtilityController extends Controller
     public function index($type){
         switch($type){
             case 'overview':
-                return inertia('Modules/User/Utility/Pages/Overview');
+                return inertia('Modules/User/Utility/Pages/Overview',[
+                    'configuration' =>  $this->configuration()
+                ]);
             break;
             case 'users':
-                return inertia('Modules/User/Utility/Pages/User');
+                return inertia('Modules/User/Utility/Pages/User',[
+                    'configuration' =>  $this->configuration()
+                ]);
             break;
             case 'roles':
-                return inertia('Modules/User/Utility/Pages/Role');
+                return inertia('Modules/User/Utility/Pages/Role',[
+                    'configuration' =>  $this->configuration()
+                ]);
             break;
             case 'menus':
-                return inertia('Modules/User/Utility/Pages/Menu');
+                return inertia('Modules/User/Utility/Pages/Menu',[
+                    'configuration' =>  $this->configuration()
+                ]);
             break;
             case 'authentications':
                 return inertia('Modules/User/Utility/Pages/Authentication',[
-                    'statistics' => $this->log->statistics()
+                    'statistics' => $this->log->statistics(),
+                    'configuration' =>  $this->configuration()
                 ]);
             break;
             case 'activities':
-                return inertia('Modules/User/Utility/Pages/Activity');
+                return inertia('Modules/User/Utility/Pages/Activity',[
+                    'configuration' =>  $this->configuration()
+                ]);
             break;
             case 'configurations':
                 return inertia('Modules/User/Utility/Pages/System',[
@@ -36,7 +47,9 @@ class UtilityController extends Controller
                 ]);
             break;  
             case 'backup':
-                return inertia('Modules/User/Utility/Pages/Backup');
+                return inertia('Modules/User/Utility/Pages/Backup',[
+                    'configuration' =>  $this->configuration()
+                ]);
             break;  
         }
     }
