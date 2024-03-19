@@ -32,7 +32,7 @@ class UtilityController extends Controller
             break;
             case 'authentications':
                 return inertia('Modules/User/Utility/Pages/Authentication',[
-                    'statistics' => $this->log->statistics(),
+                    'statistics' => [],
                     'configuration' =>  $this->configuration()
                 ]);
             break;

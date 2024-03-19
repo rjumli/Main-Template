@@ -16,7 +16,7 @@
                 </div>
             </BCardHeader>
             <BCardBody class="p-4" style="height: calc(100vh - 280px); overflow: auto;">
-                
+                  
             </BCardBody>
         </BCard>
     </form>
@@ -31,6 +31,7 @@ export default {
             h(profile,[page])
         ])
     },
+    props: ['configuration'],
     data(){
         return {
            

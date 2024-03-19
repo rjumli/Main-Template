@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\User;
+use App\Models\Configuration;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use App\Http\Resources\UserResource;
@@ -28,6 +29,7 @@ class HandleInertiaRequests extends Middleware
                 'status' => session('status'),
                 'type' => session('type')
             ],
+            'configuration' => Configuration::where('id',1)->first()
         ];
     }
 }

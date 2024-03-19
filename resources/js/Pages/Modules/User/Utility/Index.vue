@@ -5,6 +5,7 @@
         <div class="col-md-3">
             <BCard no-body class="">
                 <BCardBody class="p-3" style="height: calc(100vh - 220px); overflow: auto;">
+                    <div class="alert alert-warning text-center" role="alert">Please monitor all logs regularly</div>
                     <hr class="text-muted"/>
                     <b-list-group class="list-group-fill-success mt-4">
                         <Link :href="'/utilities/overview'">
@@ -68,6 +69,6 @@ import Authentication from './Pages/Authentication.vue';
 import Backup from './Pages/Backup.vue';
 import PageHeader from '@/Shared/Components/PageHeader.vue';
 export default {
-    components: { PageHeader, Overview, User, Role, Menu, System, Activity, Authentication, Backup }
+    components: { PageHeader, Overview, User, Role, Menu, System, Activity, Authentication, Backup },
 }
 </script>
