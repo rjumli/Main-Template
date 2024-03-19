@@ -13,7 +13,7 @@
                                     <p class="text-muted fs-12"> This is a secure area of the application. Please confirm your password before continuing.</p>
                                 </div>
                                 <div class="user-thumb text-center">
-                                    <img class="rounded-circle img-thumbnail avatar-md" :src="currentUrl+'/images/avatars/'+$page.props.user.data.avatar" :alt="$page.props.user.name">
+                                    <img class="rounded-circle img-thumbnail avatar-md" :src="$page.props.user.data.avatar" :alt="$page.props.user.name">
                                     <h5 class="fs-14 mt-3">{{ $page.props.user.name }}</h5>
                                 </div>
                                 <div class="p-2 mt-4">
