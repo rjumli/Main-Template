@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\configuration;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -31,13 +32,17 @@ class UtilityController extends Controller
             break;
             case 'configurations':
                 return inertia('Modules/User/Utility/Pages/System',[
-                    'variables' => $this->config->variables(),
-                    'configuration' =>  $this->config->configuration()
+                    'configuration' =>  $this->configuration()
                 ]);
             break;  
             case 'backup':
                 return inertia('Modules/User/Utility/Pages/Backup');
             break;  
         }
+    }
+
+    public function configuration(){
+        $data = Configuration::where('id',1)->first();
+        return $data;
     }
 }

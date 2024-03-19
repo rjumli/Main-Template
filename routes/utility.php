@@ -23,5 +23,6 @@ Route::middleware(['2fa','auth'])->group(function () {
         });
         
         Route::resource('/users', App\Http\Controllers\User\Utility\UserController::class);
+        Route::resource('/backups', App\Http\Controllers\User\Utility\BackupController::class);
     });
 });

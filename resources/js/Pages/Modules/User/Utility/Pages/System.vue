@@ -38,10 +38,18 @@
                                             <TextInput id="subname" v-model="form.subname" type="text" class="form-control" autofocus placeholder="Please enter subname" autocomplete="subname" required :class="{ 'is-invalid': form.errors.subname }" />
                                             <InputError :message="form.errors.subname" />
                                         </div>
-                                        <div class="col-md-12">
+                                        <div class="col-md-12 mb-n2">
                                             <InputLabel for="description" value="Description" required="true"/>
                                             <Textarea id="description" v-model="form.description" type="text" class="form-control" autofocus placeholder="Please enter description" autocomplete="description" required :class="{ 'is-invalid': form.errors.description }" />
                                             <InputError :message="form.errors.description" />
+                                        </div>
+                                         <div class="col-md-6">
+                                            <InputLabel for="acronym" value="Version" required="true"/>
+                                            <TextInput id="acronym" v-model="form.version" type="text" class="form-control" :readonly="true"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <InputLabel for="subname" value="Last Updated" required="true"/>
+                                            <TextInput id="subname" v-model="form.updated_at" type="text" class="form-control" :readonly="true"/>
                                         </div>
                                     </div>
                                 </form>
@@ -91,7 +99,9 @@ export default {
                 name: this.configuration.name,
                 acronym: this.configuration.acronym,
                 subname: this.configuration.subname,
-                description: this.configuration.description
+                description: this.configuration.description,
+                version: this.configuration.version,
+                updated_at: this.configuration.updated_at
             }),
         }
     },
