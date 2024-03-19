@@ -6,10 +6,16 @@ use App\Models\ListMenu;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Traits\HandlesTransaction;
+use App\Http\Resources\DefaultResource;
 
 class MenuController extends Controller
 {
     use HandlesTransaction;
+
+    public function lists(){
+        $data = ListMenu::get();
+        return DefaultResource::collection($data);
+    }   
 
     public function index(){
         $overall = []; $menus = []; $listahan = [];
